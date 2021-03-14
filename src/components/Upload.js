@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Icon } from "semantic-ui-react";
+import { Button, Form, Icon, Message } from "semantic-ui-react";
 
 import { fileService } from "../services/file.service";
 import { userService } from "../services/user.service";
@@ -11,6 +11,7 @@ class Upload extends React.Component {
     this.state = {
       selectedFile: null,
       selectedDirectoryId: null,
+      isFileSelected: null,
     };
   }
 
@@ -28,9 +29,15 @@ class Upload extends React.Component {
 
   onFileChange = (event) => {
     this.setState({ selectedFile: event.target.files[0] });
+    this.setState({ isFileSelected: true });
   };
 
   onFileUpload = () => {
+    if (this.state.selectedFile === null) {
+      this.setState({ isFileSelected: false });
+      return;
+    }
+
     const formData = new FormData();
 
     formData.append("file", this.state.selectedFile);
@@ -39,6 +46,7 @@ class Upload extends React.Component {
       .uploadFile(formData, this.state.selectedDirectoryId)
       .then((response) => {
         console.log(response);
+        this.setState({ selectedFile: null });
       })
       .catch((error) => {
         console.log(error);
@@ -49,7 +57,7 @@ class Upload extends React.Component {
     if (this.state.selectedFile) {
       return (
         <div>
-          <h3>File Details:</h3>
+          <h3>Selected File:</h3>
           <p>File Name: {this.state.selectedFile.name}</p>
           <p>File Size: {this.state.selectedFile.size}</p>
         </div>
@@ -59,9 +67,17 @@ class Upload extends React.Component {
     }
   };
 
+  isFileSelectedValidation = () => {
+    if (this.state.isFileSelected === false) {
+      return <Message error header="Please select a file to upload" />;
+    }
+
+    return <></>;
+  };
+
   render() {
     return (
-      <Form onSubmit={this.onFileUpload}>
+      <Form error onSubmit={this.onFileUpload}>
         <Form.Field>
           <h3>Select file to upload</h3>
           <Button
@@ -82,6 +98,7 @@ class Upload extends React.Component {
             Upload
           </Button>
         </Form.Field>
+        {this.isFileSelectedValidation()}
       </Form>
     );
   }

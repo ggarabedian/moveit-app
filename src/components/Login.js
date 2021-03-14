@@ -21,6 +21,7 @@ const Login = (props) => {
 
   const onChangeUsername = (e) => {
     const username = e.target.value;
+
     setUsername(username);
   };
 
@@ -41,21 +42,14 @@ const Login = (props) => {
       });
   };
 
-  const showError = (e) => {
-    if (message) {
-      return true;
-    }
-
-    return false;
-  };
-
   return (
     <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
       <Grid.Column style={{ maxWidth: 450 }}>
         <Header as="h2" color="teal" textAlign="center"></Header>
-        <Form error={showError()} onSubmit={handleLogin} size="large">
+        <Form error={message} onSubmit={handleLogin} size="large">
           <Segment stacked>
             <Form.Input
+              required
               fluid
               icon="user"
               iconPosition="left"
@@ -64,6 +58,7 @@ const Login = (props) => {
               onChange={onChangeUsername}
             />
             <Form.Input
+              required
               fluid
               icon="lock"
               iconPosition="left"

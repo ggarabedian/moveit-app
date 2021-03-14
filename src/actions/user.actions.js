@@ -11,7 +11,6 @@ export const login = (username, password) => (dispatch) => {
         payload: { user: data },
       });
 
-      console.log(data);
       history.push("/");
 
       return Promise.resolve();
