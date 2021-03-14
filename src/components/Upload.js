@@ -1,8 +1,10 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Button, Form, Icon, Message } from "semantic-ui-react";
 
-import { fileService } from "../services/file.service";
+//import { fileService } from "../services/file.service";
 import { userService } from "../services/user.service";
+import { upload } from "../actions/file.actions";
 
 class Upload extends React.Component {
   constructor(props) {
@@ -12,6 +14,7 @@ class Upload extends React.Component {
       selectedFile: null,
       selectedDirectoryId: null,
       isFileSelected: null,
+      fileUploadSuccessful: false,
     };
   }
 
@@ -42,10 +45,11 @@ class Upload extends React.Component {
 
     formData.append("file", this.state.selectedFile);
 
-    fileService
-      .uploadFile(formData, this.state.selectedDirectoryId)
+    this.props
+      .upload(formData, this.state.selectedDirectoryId)
       .then((response) => {
-        console.log(response);
+        this.setState({ fileUploadSuccessful: true });
+        this.setState({ isFileSelected: null });
         this.setState({ selectedFile: null });
       })
       .catch((error) => {
@@ -76,8 +80,14 @@ class Upload extends React.Component {
   };
 
   render() {
+    console.log(this.props.message);
+
     return (
-      <Form error onSubmit={this.onFileUpload}>
+      <Form
+        success={this.state.fileUploadSuccessful}
+        error={this.props.message.message !== ""}
+        onSubmit={this.onFileUpload}
+      >
         <Form.Field>
           <h3>Select file to upload</h3>
           <Button
@@ -99,9 +109,17 @@ class Upload extends React.Component {
           </Button>
         </Form.Field>
         {this.isFileSelectedValidation()}
+        <Message error content={this.props.message.message} />
+        <Message success content="File Uploaded Successfully!" />
       </Form>
     );
   }
 }
 
-export default Upload;
+const mapStateToProps = (state) => {
+  return {
+    message: state.message,
+  };
+};
+
+export default connect(mapStateToProps, { upload })(Upload);
