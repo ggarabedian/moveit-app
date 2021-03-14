@@ -19,7 +19,31 @@ const logout = () => {
   localStorage.removeItem("user");
 };
 
+const getUserDetails = () => {
+  const config = getRequestConfig();
+
+  return express.get("/users/self", config);
+};
+
+const getRequestConfig = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (user && user.access_token) {
+    const config = {
+      headers: {
+        Authorization: "Bearer " + user.access_token,
+      },
+    };
+
+    return config;
+  } else {
+    return {};
+  }
+};
+
 export const userService = {
   login,
   logout,
+  getRequestConfig,
+  getUserDetails,
 };
