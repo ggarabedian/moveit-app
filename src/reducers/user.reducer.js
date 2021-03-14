@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGIN_FAIL } from "../actions/types";
+import { LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT } from "../actions/types";
 
 const user = JSON.parse(localStorage.getItem("user"));
 const initialState = user
@@ -16,6 +16,12 @@ export default function userReducer(state = initialState, action) {
         user: payload.user,
       };
     case LOGIN_FAIL:
+      return {
+        ...state,
+        isLoggedIn: false,
+        user: null,
+      };
+    case LOGOUT:
       return {
         ...state,
         isLoggedIn: false,

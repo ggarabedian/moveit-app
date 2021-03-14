@@ -1,12 +1,32 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import { useDispatch, useSelector } from "react-redux";
+
+import { logout } from "../actions/user.actions";
+
 const Header = () => {
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+  const logOut = () => {
+    dispatch(logout());
+  };
+
   return (
     <div className="ui secondary pointing menu">
       <Link to="/" className="item">
         MOVEit
       </Link>
+      <div className="right menu">
+        {isLoggedIn ? (
+          <a href="/" className="nav-link" onClick={logOut}>
+            Log Out
+          </a>
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 };

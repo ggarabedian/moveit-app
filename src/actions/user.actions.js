@@ -1,6 +1,6 @@
 import { userService } from "../services/user.service";
 import { history } from "../helpers/history";
-import { LOGIN_SUCCESS, LOGIN_FAIL } from "./types";
+import { LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT } from "./types";
 
 export const login = (username, password) => (dispatch) => {
   return userService.login(username, password).then(
@@ -27,6 +27,15 @@ export const login = (username, password) => (dispatch) => {
   );
 };
 
+export const logout = () => (dispatch) => {
+  userService.logout();
+
+  dispatch({
+    type: LOGOUT,
+  });
+};
+
 export const authActions = {
   login,
+  logout,
 };
