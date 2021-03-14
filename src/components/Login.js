@@ -1,12 +1,21 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Button, Form, Grid, Header, Segment } from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Segment,
+  Message,
+} from "semantic-ui-react";
 
 import { login } from "../actions/user.actions";
 
 const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const { message } = useSelector((state) => state.message);
 
   const dispatch = useDispatch();
 
@@ -24,17 +33,27 @@ const Login = (props) => {
     e.preventDefault();
 
     dispatch(login(username, password))
-      .then(() => {})
+      .then((response) => {
+        console.log(response);
+      })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const showError = (e) => {
+    if (message) {
+      return true;
+    }
+
+    return false;
   };
 
   return (
     <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
       <Grid.Column style={{ maxWidth: 450 }}>
         <Header as="h2" color="teal" textAlign="center"></Header>
-        <Form onSubmit={handleLogin} size="large">
+        <Form error={showError()} onSubmit={handleLogin} size="large">
           <Segment stacked>
             <Form.Input
               fluid
@@ -57,6 +76,7 @@ const Login = (props) => {
               Login
             </Button>
           </Segment>
+          <Message error header="An error has occurred" content={message} />
         </Form>
       </Grid.Column>
     </Grid>
