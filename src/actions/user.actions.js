@@ -10,7 +10,7 @@ export const login = (username, password) => (dispatch) => {
         payload: { user: data },
       });
 
-      history.push("/upload");
+      history.push("/");
 
       return Promise.resolve();
     },
