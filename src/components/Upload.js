@@ -1,69 +1,68 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Form, Icon, Message } from "semantic-ui-react";
 
-//import { fileService } from "../services/file.service";
 import { userService } from "../services/user.service";
 import { upload } from "../actions/file.actions";
+import { clearMessage } from "../actions/message.actions";
 
-class Upload extends React.Component {
-  constructor(props) {
-    super(props);
+const Upload = (props) => {
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedDirectoryId, setSelectedDirectoryId] = useState(null);
+  const [isFileSelected, setIsFileSelected] = useState(null);
+  const [fileUploadSuccessful, setfileUploadSuccessful] = useState(false);
 
-    this.state = {
-      selectedFile: null,
-      selectedDirectoryId: null,
-      isFileSelected: null,
-      fileUploadSuccessful: false,
-    };
-  }
+  const { message } = useSelector((state) => state.message);
 
-  componentDidMount = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
     userService
       .getUserDetails()
       .then((response) => {
         console.log(response);
-        this.setState({ selectedDirectoryId: response.data.defaultFolderID });
+        setSelectedDirectoryId(response.data.defaultFolderID);
       })
       .catch((error) => {
         console.log(error);
       });
+  }, []);
+
+  const onFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+    setfileUploadSuccessful(false);
+    setIsFileSelected(true);
+    dispatch(clearMessage());
   };
 
-  onFileChange = (event) => {
-    this.setState({ selectedFile: event.target.files[0] });
-    this.setState({ isFileSelected: true });
-  };
-
-  onFileUpload = () => {
-    if (this.state.selectedFile === null) {
-      this.setState({ isFileSelected: false });
+  const onFileUpload = () => {
+    if (selectedFile === null) {
+      setIsFileSelected(false);
       return;
     }
 
     const formData = new FormData();
 
-    formData.append("file", this.state.selectedFile);
+    formData.append("file", selectedFile);
 
-    this.props
-      .upload(formData, this.state.selectedDirectoryId)
+    dispatch(upload(formData, selectedDirectoryId))
       .then((response) => {
-        this.setState({ fileUploadSuccessful: true });
-        this.setState({ isFileSelected: null });
-        this.setState({ selectedFile: null });
+        setfileUploadSuccessful(true);
+        setIsFileSelected(null);
+        setSelectedFile(selectedFile);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  selectedFileDetails = () => {
-    if (this.state.selectedFile) {
+  const selectedFileDetails = () => {
+    if (selectedFile) {
       return (
         <div>
           <h3>Selected File:</h3>
-          <p>File Name: {this.state.selectedFile.name}</p>
-          <p>File Size: {this.state.selectedFile.size}</p>
+          <p>File Name: {selectedFile.name}</p>
+          <p>File Size: {selectedFile.size}</p>
         </div>
       );
     } else {
@@ -71,55 +70,45 @@ class Upload extends React.Component {
     }
   };
 
-  isFileSelectedValidation = () => {
-    if (this.state.isFileSelected === false) {
+  const isFileSelectedValidation = () => {
+    if (isFileSelected === false) {
       return <Message error header="Please select a file to upload" />;
     }
 
     return <></>;
   };
 
-  render() {
-    console.log(this.props.message);
-
-    return (
-      <Form
-        success={this.state.fileUploadSuccessful}
-        error={this.props.message.message !== ""}
-        onSubmit={this.onFileUpload}
-      >
-        <Form.Field>
-          <h3>Select file to upload</h3>
-          <Button
-            color="teal"
-            as="label"
-            htmlFor="file"
-            type="button"
-            animated="fade"
-          >
-            <Button.Content visible>
-              <Icon name="file" />
-            </Button.Content>
-            <Button.Content hidden>Choose a File</Button.Content>
-          </Button>
-          <input type="file" id="file" hidden onChange={this.onFileChange} />
-          {this.selectedFileDetails()}
-          <Button color="teal" style={{ marginTop: "20px" }} type="submit">
-            Upload
-          </Button>
-        </Form.Field>
-        {this.isFileSelectedValidation()}
-        <Message error content={this.props.message.message} />
-        <Message success content="File Uploaded Successfully!" />
-      </Form>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    message: state.message,
-  };
+  return (
+    <Form
+      success={fileUploadSuccessful}
+      error={message !== ""}
+      onSubmit={onFileUpload}
+    >
+      <Form.Field>
+        <h3>Select file to upload</h3>
+        <Button
+          color="teal"
+          as="label"
+          htmlFor="file"
+          type="button"
+          animated="fade"
+        >
+          <Button.Content visible>
+            <Icon name="file" />
+          </Button.Content>
+          <Button.Content hidden>Choose a File</Button.Content>
+        </Button>
+        <input type="file" id="file" hidden onChange={onFileChange} />
+        {selectedFileDetails()}
+        <Button color="teal" style={{ marginTop: "20px" }} type="submit">
+          Upload
+        </Button>
+      </Form.Field>
+      {isFileSelectedValidation()}
+      <Message error content={message} />
+      <Message success content="File Uploaded Successfully!" />
+    </Form>
+  );
 };
 
-export default connect(mapStateToProps, { upload })(Upload);
+export default Upload;
