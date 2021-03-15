@@ -20,7 +20,7 @@ export const upload = (formData, baseDirectoryId) => (dispatch) => {
       return Promise.resolve();
     })
     .catch((error) => {
-      const errorMessage = error.response.data.detail;
+      const message = error.response.data.detail;
 
       dispatch({
         type: UPLOAD_FAIL,
@@ -28,7 +28,7 @@ export const upload = (formData, baseDirectoryId) => (dispatch) => {
 
       dispatch({
         type: SET_MESSAGE,
-        payload: errorMessage,
+        payload: message,
         category: ERROR_CATEGORY,
       });
     });

@@ -15,7 +15,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    history.listen((location) => {
+    history.listen(() => {
       dispatch(clearMessage());
     });
   }, [dispatch]);

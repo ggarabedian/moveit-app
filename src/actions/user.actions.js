@@ -15,7 +15,7 @@ export const login = (username, password) => (dispatch) => {
       history.push("/");
     })
     .catch((error) => {
-      const errorMessage = error.response.data.error_description;
+      const message = error.response.data.error_description;
 
       dispatch({
         type: LOGIN_FAIL,
@@ -23,7 +23,7 @@ export const login = (username, password) => (dispatch) => {
 
       dispatch({
         type: SET_MESSAGE,
-        payload: errorMessage,
+        payload: message,
         category: ERROR_CATEGORY,
       });
     });
