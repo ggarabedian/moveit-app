@@ -16,7 +16,22 @@ const login = (username, password) => {
 };
 
 const logout = () => {
-  localStorage.removeItem("user");
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  revokeToken(user.access_token)
+    .then((response) => {
+      localStorage.removeItem("user");
+    })
+    .catch((error) => {
+      localStorage.removeItem("user");
+    });
+};
+
+const revokeToken = (token) => {
+  const params = new URLSearchParams();
+  params.append("token", token);
+
+  return express.post("/token/revoke", params);
 };
 
 const getUserDetails = () => {

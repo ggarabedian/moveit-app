@@ -38,7 +38,6 @@ const Upload = (props) => {
 
   const onFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
-    console.log(event.target.files[0]);
     dispatch(clearMessage());
   };
 

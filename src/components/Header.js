@@ -9,7 +9,9 @@ const Header = () => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
-  const logOut = () => {
+  const logOut = (e) => {
+    e.preventDefault();
+
     dispatch(logout());
   };
 
