@@ -10,12 +10,13 @@ import {
 } from "semantic-ui-react";
 
 import { login } from "../actions/user.actions";
+import { ERROR_CATEGORY } from "../actions/categories";
 
 const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const { message } = useSelector((state) => state.message);
+  const { message, category } = useSelector((state) => state.message);
 
   const dispatch = useDispatch();
 
@@ -27,6 +28,7 @@ const Login = (props) => {
 
   const onChangePassword = (e) => {
     const password = e.target.value;
+
     setPassword(password);
   };
 
@@ -40,7 +42,11 @@ const Login = (props) => {
     <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
       <Grid.Column style={{ maxWidth: 450 }}>
         <Header as="h2" color="teal" textAlign="center"></Header>
-        <Form error={message !== ""} onSubmit={handleLogin} size="large">
+        <Form
+          error={category === ERROR_CATEGORY}
+          onSubmit={handleLogin}
+          size="large"
+        >
           <Segment stacked>
             <Form.Input
               required

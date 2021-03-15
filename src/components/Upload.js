@@ -4,15 +4,14 @@ import { Button, Form, Icon, Message } from "semantic-ui-react";
 
 import { userService } from "../services/user.service";
 import { upload } from "../actions/file.actions";
-import { clearMessage } from "../actions/message.actions";
+import { clearMessage, setMessage } from "../actions/message.actions";
+import { SUCCESS_CATEGORY, ERROR_CATEGORY } from "../actions/categories";
 
 const Upload = (props) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [baseDirectoryId, setbaseDirectoryId] = useState(null);
-  const [isFileSelected, setIsFileSelected] = useState(null);
-  const [fileUploadSuccessful, setfileUploadSuccessful] = useState(false);
 
-  const { message } = useSelector((state) => state.message);
+  const { message, category } = useSelector((state) => state.message);
 
   const dispatch = useDispatch();
 
@@ -30,14 +29,12 @@ const Upload = (props) => {
 
   const onFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
-    setfileUploadSuccessful(false);
-    setIsFileSelected(true);
     dispatch(clearMessage());
   };
 
   const onFileUpload = () => {
     if (selectedFile === null) {
-      setIsFileSelected(false);
+      dispatch(setMessage("Please select a file to upload", ERROR_CATEGORY));
       return;
     }
 
@@ -46,9 +43,7 @@ const Upload = (props) => {
     formData.append("file", selectedFile);
 
     dispatch(upload(formData, baseDirectoryId)).then((response) => {
-      setfileUploadSuccessful(true);
-      setIsFileSelected(null);
-      setSelectedFile(selectedFile);
+      setSelectedFile(null);
     });
   };
 
@@ -66,18 +61,10 @@ const Upload = (props) => {
     }
   };
 
-  const isFileSelectedValidation = () => {
-    if (isFileSelected === false) {
-      return <Message error header="Please select a file to upload" />;
-    }
-
-    return <></>;
-  };
-
   return (
     <Form
-      success={fileUploadSuccessful}
-      error={message !== ""}
+      success={category === SUCCESS_CATEGORY}
+      error={category === ERROR_CATEGORY}
       onSubmit={onFileUpload}
     >
       <Form.Field>
@@ -100,9 +87,8 @@ const Upload = (props) => {
           Upload
         </Button>
       </Form.Field>
-      {isFileSelectedValidation()}
       <Message error content={message} />
-      <Message success content="File Uploaded Successfully!" />
+      <Message success content={message} />
     </Form>
   );
 };

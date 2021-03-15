@@ -1,6 +1,7 @@
 import { userService } from "../services/user.service";
 import { history } from "../helpers/history";
 import { LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, SET_MESSAGE } from "./types";
+import { ERROR_CATEGORY } from "./categories";
 
 export const login = (username, password) => (dispatch) => {
   return userService
@@ -23,6 +24,7 @@ export const login = (username, password) => (dispatch) => {
       dispatch({
         type: SET_MESSAGE,
         payload: errorMessage,
+        category: ERROR_CATEGORY,
       });
     });
 };
