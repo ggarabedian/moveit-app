@@ -12,8 +12,6 @@ export const login = (username, password) => (dispatch) => {
       });
 
       history.push("/");
-
-      return Promise.resolve();
     })
     .catch((error) => {
       const errorMessage = error.response.data.error_description;
@@ -26,8 +24,6 @@ export const login = (username, password) => (dispatch) => {
         type: SET_MESSAGE,
         payload: errorMessage,
       });
-
-      return Promise.reject();
     });
 };
 

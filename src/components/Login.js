@@ -33,13 +33,7 @@ const Login = (props) => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    dispatch(login(username, password))
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    dispatch(login(username, password));
   };
 
   return (

@@ -8,7 +8,7 @@ import { clearMessage } from "../actions/message.actions";
 
 const Upload = (props) => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [selectedDirectoryId, setSelectedDirectoryId] = useState(null);
+  const [baseDirectoryId, setbaseDirectoryId] = useState(null);
   const [isFileSelected, setIsFileSelected] = useState(null);
   const [fileUploadSuccessful, setfileUploadSuccessful] = useState(false);
 
@@ -21,7 +21,7 @@ const Upload = (props) => {
       .getUserDetails()
       .then((response) => {
         console.log(response);
-        setSelectedDirectoryId(response.data.defaultFolderID);
+        setbaseDirectoryId(response.data.defaultFolderID);
       })
       .catch((error) => {
         console.log(error);
@@ -45,15 +45,11 @@ const Upload = (props) => {
 
     formData.append("file", selectedFile);
 
-    dispatch(upload(formData, selectedDirectoryId))
-      .then((response) => {
-        setfileUploadSuccessful(true);
-        setIsFileSelected(null);
-        setSelectedFile(selectedFile);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    dispatch(upload(formData, baseDirectoryId)).then((response) => {
+      setfileUploadSuccessful(true);
+      setIsFileSelected(null);
+      setSelectedFile(selectedFile);
+    });
   };
 
   const selectedFileDetails = () => {
