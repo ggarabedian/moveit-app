@@ -18,13 +18,15 @@ const login = (username, password) => {
 const logout = () => {
   const user = JSON.parse(localStorage.getItem("user"));
 
-  revokeToken(user.access_token)
-    .then((response) => {
-      localStorage.removeItem("user");
-    })
-    .catch((error) => {
-      localStorage.removeItem("user");
-    });
+  if (user && user.access_token) {
+    revokeToken(user.access_token)
+      .then((response) => {
+        localStorage.removeItem("user");
+      })
+      .catch((error) => {
+        localStorage.removeItem("user");
+      });
+  }
 };
 
 const revokeToken = (token) => {

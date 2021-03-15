@@ -30,12 +30,9 @@ const Upload = (props) => {
     userService
       .getUserDetails()
       .then((response) => {
-        console.log(response);
         setbaseDirectoryId(response.data.defaultFolderID);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, []);
 
   const onFileChange = (event) => {
@@ -59,7 +56,6 @@ const Upload = (props) => {
   };
 
   const selectedFileDetails = () => {
-    console.log(selectedFile);
     if (
       selectedFile &&
       (selectedFile.type === "image/png" ||

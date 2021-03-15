@@ -22,7 +22,7 @@ const Header = () => {
       </Link>
       <div className="right menu">
         {isLoggedIn ? (
-          <a href="/" className="nav-link" onClick={logOut}>
+          <a href="/" className="ui item" onClick={logOut}>
             Log Out
           </a>
         ) : (
