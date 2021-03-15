@@ -1,8 +1,8 @@
-.container .grid {
+.container > .grid {
   height: 100vh;
 }
 
-.container .grid .column {
+.container > .grid > .column {
   max-width: 450px;
   text-align: center;
 }
