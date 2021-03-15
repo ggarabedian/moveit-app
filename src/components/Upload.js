@@ -16,6 +16,8 @@ import { upload } from "../actions/file.actions";
 import { clearMessage, setMessage } from "../actions/message.actions";
 import { SUCCESS_CATEGORY, ERROR_CATEGORY } from "../actions/categories";
 
+import "./Upload.css";
+
 const Upload = (props) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [baseDirectoryId, setbaseDirectoryId] = useState(null);
@@ -57,9 +59,12 @@ const Upload = (props) => {
   };
 
   const selectedFileDetails = () => {
+    console.log(selectedFile);
     if (
       selectedFile &&
-      (selectedFile.type === "image/png" || selectedFile.type === "image/jpg")
+      (selectedFile.type === "image/png" ||
+        selectedFile.type === "image/jpg" ||
+        selectedFile.type === "image/jpeg")
     ) {
       return (
         <div>
@@ -74,7 +79,7 @@ const Upload = (props) => {
         <div>
           <h3>No preview available for the selected file format</h3>
           <p>{selectedFile.name}</p>
-          <p>{selectedFile.size}</p>
+          <p>{selectedFile.size} bytes</p>
         </div>
       );
     } else {
@@ -103,14 +108,30 @@ const Upload = (props) => {
                 type="button"
                 animated="fade"
               >
-                <Button.Content visible>
+                <Button.Content visible>Choose a File</Button.Content>
+                <Button.Content hidden>
                   <Icon name="file" />
                 </Button.Content>
-                <Button.Content hidden>Choose a File</Button.Content>
               </Button>
-              <input type="file" id="file" hidden onChange={onFileChange} />
-              <Button color="teal" style={{ marginTop: "20px" }} type="submit">
-                Upload
+              <input
+                type="file"
+                id="file"
+                hidden
+                onChange={onFileChange}
+                onClick={(event) => {
+                  event.target.value = null;
+                }}
+              />
+              <Button
+                color="teal"
+                style={{ marginTop: "20px" }}
+                type="submit"
+                animated="fade"
+              >
+                <Button.Content visible>Upload</Button.Content>
+                <Button.Content hidden>
+                  <Icon name="cloud upload" />
+                </Button.Content>
               </Button>
             </Form.Field>
           </Grid.Column>

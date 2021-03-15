@@ -1,0 +1,8 @@
+.ui .column .field .button {
+  width: 14vw;
+  height: 4vh;
+}
+
+.ui .column .field .button .content {
+  color: white;
+}
