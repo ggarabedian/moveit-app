@@ -4,7 +4,7 @@ import { userService } from "./user.service";
 function uploadFile(formData, directoryId) {
   const config = userService.getRequestConfig();
 
-  return express.post(`/upload/${directoryId}`, formData, config);
+  return express.post(`/folders/${directoryId}/files`, formData, config);
 }
 
 export const fileService = {

@@ -46,7 +46,7 @@ const Login = (props) => {
     <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
       <Grid.Column style={{ maxWidth: 450 }}>
         <Header as="h2" color="teal" textAlign="center"></Header>
-        <Form error={message} onSubmit={handleLogin} size="large">
+        <Form error={message !== ""} onSubmit={handleLogin} size="large">
           <Segment stacked>
             <Form.Input
               required
@@ -71,7 +71,7 @@ const Login = (props) => {
               Login
             </Button>
           </Segment>
-          <Message error header="An error has occurred" content={message} />
+          <Message error content={message} />
         </Form>
       </Grid.Column>
     </Grid>
