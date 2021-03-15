@@ -1,6 +1,7 @@
 .ui .column .field .button {
   width: 14vw;
   height: 4vh;
+  margin-top: 20px;
 }
 
 .ui .column .field .button .content {

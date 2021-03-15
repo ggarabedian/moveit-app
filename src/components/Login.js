@@ -12,6 +12,8 @@ import {
 import { login } from "../actions/user.actions";
 import { ERROR_CATEGORY } from "../actions/categories";
 
+import "./Login.css";
+
 const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -39,8 +41,8 @@ const Login = (props) => {
   };
 
   return (
-    <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
-      <Grid.Column style={{ maxWidth: 450 }}>
+    <Grid textAlign="center" verticalAlign="middle">
+      <Grid.Column>
         <Header as="h2" color="teal" textAlign="center"></Header>
         <Form
           error={category === ERROR_CATEGORY}

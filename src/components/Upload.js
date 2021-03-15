@@ -118,12 +118,7 @@ const Upload = (props) => {
                   event.target.value = null;
                 }}
               />
-              <Button
-                color="teal"
-                style={{ marginTop: "20px" }}
-                type="submit"
-                animated="fade"
-              >
+              <Button color="teal" type="submit" animated="fade">
                 <Button.Content visible>Upload</Button.Content>
                 <Button.Content hidden>
                   <Icon name="cloud upload" />
