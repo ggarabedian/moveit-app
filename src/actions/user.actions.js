@@ -35,6 +35,8 @@ export const logout = () => (dispatch) => {
   dispatch({
     type: LOGOUT,
   });
+
+  history.push("/");
 };
 
 export const authActions = {
