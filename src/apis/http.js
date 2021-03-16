@@ -5,13 +5,13 @@ import { logout } from "../actions/user.actions";
 import { setMessage } from "../actions/message.actions";
 import { ERROR_CATEGORY } from "../actions/categories";
 
-const express = axios.create({
+const http = axios.create({
   baseURL: "http://localhost:3000",
 });
 
 // Intercepts all requests and logs the user out when the
 // access token (session) has expired (401 Unauthorized errors)
-express.interceptors.response.use(
+http.interceptors.response.use(
   function (response) {
     return response;
   },
@@ -24,7 +24,7 @@ express.interceptors.response.use(
         )
       );
 
-      setTimeout(function () {
+      setTimeout(() => {
         store.dispatch(logout());
       }, 3000);
 
@@ -40,4 +40,4 @@ express.interceptors.response.use(
   }
 );
 
-export default express;
+export default http;

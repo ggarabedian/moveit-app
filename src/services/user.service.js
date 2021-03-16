@@ -1,4 +1,4 @@
-import express from "../apis/express";
+import http from "../apis/http";
 
 const login = (username, password) => {
   const params = new URLSearchParams();
@@ -6,7 +6,7 @@ const login = (username, password) => {
   params.append("username", username);
   params.append("password", password);
 
-  return express.post("/token", params).then((response) => {
+  return http.post("/token", params).then((response) => {
     if (response.data) {
       localStorage.setItem("user", JSON.stringify(response.data));
     }
@@ -33,13 +33,13 @@ const revokeToken = (token) => {
   const params = new URLSearchParams();
   params.append("token", token);
 
-  return express.post("/token/revoke", params);
+  return http.post("/token/revoke", params);
 };
 
 const getUserDetails = () => {
   const config = getRequestConfig();
 
-  return express.get("/users/self", config);
+  return http.get("/users/self", config);
 };
 
 const getRequestConfig = () => {
@@ -53,9 +53,9 @@ const getRequestConfig = () => {
     };
 
     return config;
-  } else {
-    return {};
   }
+
+  return {};
 };
 
 export const userService = {

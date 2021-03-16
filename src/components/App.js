@@ -24,14 +24,14 @@ const App = () => {
     <div className="ui container">
       <Router history={history}>
         {isLoggedIn ? (
-          <div>
+          <React.Fragment>
             <Header />
             <Switch>
               <Route path="/" exact component={Upload} />
             </Switch>
-          </div>
+          </React.Fragment>
         ) : (
-          <Login></Login>
+          <Login />
         )}
       </Router>
     </div>

@@ -41,7 +41,7 @@ const Upload = (props) => {
   };
 
   const onFileUpload = () => {
-    if (selectedFile === null) {
+    if (!selectedFile) {
       dispatch(setMessage("Please select a file to upload", ERROR_CATEGORY));
       return;
     }
@@ -56,35 +56,32 @@ const Upload = (props) => {
   };
 
   const selectedFileDetails = () => {
+    if (!selectedFile) {
+      return <h3>No file selected</h3>;
+    }
+
     if (
-      selectedFile &&
-      (selectedFile.type === "image/png" ||
-        selectedFile.type === "image/jpg" ||
-        selectedFile.type === "image/jpeg")
+      selectedFile.type === "image/png" ||
+      selectedFile.type === "image/jpg" ||
+      selectedFile.type === "image/jpeg"
     ) {
       return (
-        <div>
+        <>
           <h3>Preview</h3>
           <Image src={URL.createObjectURL(selectedFile)} size="small" wrapped />
           <p>{selectedFile.name}</p>
           <p>{selectedFile.size} bytes</p>
-        </div>
-      );
-    } else if (selectedFile) {
-      return (
-        <div>
-          <h3>No preview available for the selected file format</h3>
-          <p>{selectedFile.name}</p>
-          <p>{selectedFile.size} bytes</p>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <h3>No file selected</h3>
-        </div>
+        </>
       );
     }
+
+    return (
+      <div>
+        <h3>No preview available for the selected file format</h3>
+        <p>{selectedFile.name}</p>
+        <p>{selectedFile.size} bytes</p>
+      </div>
+    );
   };
 
   return (

@@ -1,10 +1,10 @@
-import express from "../apis/express";
+import http from "../apis/http";
 import { userService } from "./user.service";
 
 function uploadFile(formData, baseDirectoryId) {
   const config = userService.getRequestConfig();
 
-  return express.post(`/folders/${baseDirectoryId}/files`, formData, config);
+  return http.post(`/folders/${baseDirectoryId}/files`, formData, config);
 }
 
 export const fileService = {
