@@ -1,31 +1,31 @@
 import http from "../apis/http";
 
-const login = (username, password) => {
+const login = async (username, password) => {
   const params = new URLSearchParams();
   params.append("grant_type", "password");
   params.append("username", username);
   params.append("password", password);
 
-  return http.post("/token", params).then((response) => {
-    if (response.data) {
-      localStorage.setItem("user", JSON.stringify(response.data));
-    }
+  const response = await http.post("/token", params);
+
+  if (response.data) {
+    localStorage.setItem("user", JSON.stringify(response.data));
 
     return response.data;
-  });
+  }
+
+  throw new Error("An unexpecter error has occurred");
 };
 
-const logout = () => {
+const logout = async () => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   if (user && user.access_token) {
-    revokeToken(user.access_token)
-      .then((response) => {
-        localStorage.removeItem("user");
-      })
-      .catch((error) => {
-        localStorage.removeItem("user");
-      });
+    try {
+      await revokeToken(user.access_token);
+    } finally {
+      localStorage.removeItem("user");
+    }
   }
 };
 
@@ -36,10 +36,15 @@ const revokeToken = (token) => {
   return http.post("/token/revoke", params);
 };
 
-const getUserDetails = () => {
+const getUserDetails = async () => {
   const config = getRequestConfig();
 
-  return http.get("/users/self", config);
+  try {
+    const response = await http.get("/users/self", config);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const getRequestConfig = () => {

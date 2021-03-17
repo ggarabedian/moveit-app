@@ -8,7 +8,7 @@ import { ERROR_CATEGORY, SUCCESS_CATEGORY } from "./categories";
 
 const mockStore = configureMockStore([thunk, promise]);
 
-describe("User Actions", () => {
+describe("Test File Actions", () => {
   let store;
 
   beforeEach(() => {
