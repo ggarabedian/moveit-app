@@ -1,16 +1,11 @@
 import React from "react";
 import * as reactRedux from "react-redux";
-import configureMockStore from "redux-mock-store";
-import promise from "redux-promise-middleware";
-import thunk from "redux-thunk";
-import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { render, screen } from "@testing-library/react";
 
 import App from "./App";
 
-const mockStore = configureMockStore([thunk, promise]);
-
-describe("Test Login and Upload Components", () => {
+describe("Test App Component", () => {
   const useSelectorMock = jest.spyOn(reactRedux, "useSelector");
   const useDispatchMock = jest.spyOn(reactRedux, "useDispatch");
 
@@ -25,8 +20,10 @@ describe("Test Login and Upload Components", () => {
     });
     render(<App />);
 
-    expect.assertions(1);
+    expect.assertions(3);
     expect(screen.getByText("Login")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Username")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Password")).toBeInTheDocument();
   });
 
   it("renders upload screen", () => {
